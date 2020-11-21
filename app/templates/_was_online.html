@@ -1,0 +1,11 @@
+{% if (time-user.last_seen).days < 1 and (time-user.last_seen).seconds/60 <= 5  %}
+В сети
+{% elif (time-user.last_seen).days < 1 and 5 < (time-user.last_seen).seconds/60 <= 1440 %}
+Был в сети недавно
+{% elif 1 <= (time-user.last_seen).days <=7  %}
+Был в сети на этой неделе
+{% elif 7 < (time-user.last_seen).days <= 30 %}
+Был в сети в этом месяце
+{% elif (time-user.last_seen).days > 30 %}
+Был в сети более месяца назад
+{% endif %}

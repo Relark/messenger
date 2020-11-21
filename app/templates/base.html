@@ -1,0 +1,24 @@
+<html>
+	<head>
+		<title>Messenger</title>
+		<link rel="stylesheet" type= "text/css" href="{{ url_for('static', filename='bootstrap.min.css')}}">
+		<link rel="stylesheet" type= "text/css" href="/static/my_style.css?{{time}}">
+	</head>
+	<body>
+		<div class="main_wrap" id="main_wrap">
+			{% include '_head.html' %}
+			<div class="left_block" id="left_block">
+				{% include '_left_messages.html' %}
+			</div>
+			{% block content %}{% endblock %}
+		</div>
+		</div>
+		{% include '_contacts.html' %}
+		{% include '_settings.html' %}
+		{% if dialog %}
+		<script charset="utf-8" src="/static/script.js?{{time}}"></script>
+		{% else %}
+		<script charset="utf-8" src="/static/script2.js?{{time}}"></script>
+		{% endif %}
+	</body>		
+</html>

@@ -1,0 +1,29 @@
+{% for message in left_messages %}
+<a id = {{ message[0].dialog.id }} href="/im{{ message[0].dialog.id }}">
+	<div class="left_block_message">
+		<div class="left_block_userpic" style="background: {{ current_user.dialog_color(message[0].dialog) }}">
+		{{current_user.dialog_name(message[0].dialog)[:1]}}
+		</div>
+		<div class="left_block_date">
+		{% if (time-message[0].timestamp).days < 1 %}
+		{{ message[0].timestamp.strftime("%H:%M:%S") }}
+		{% else %}
+		{{ message[0].timestamp.strftime("%d/%m/%y")}}
+		{% endif %}
+		</div>
+		<div class="left_block_name">{{ current_user.dialog_name(message[0].dialog) }}</div>
+		{% if 0 < message[3] < 100 %}
+		<div class="unread_messages">{{ message[3]}}</div>
+		{% elif 100 <= message[3] < 1000 %}
+		<div class="unread_messages" style="width:30px">{{ message[3] }}</div>
+		{% elif message[3] >= 1000 %}
+		<div class="unread_messages" style="width:40px">1000+</div>
+		{% endif %}
+		{% if message[0].sender == current_user %}
+		<div class="left_block_text"><span style="font-size:13px; color:#949494;">Вы:</span>{{ message[0].body }}</div>
+		{% else %}
+		<div class="left_block_text">{{ message[0].body }}</div>
+		{% endif %}
+	</div>
+</a>
+{% endfor %}

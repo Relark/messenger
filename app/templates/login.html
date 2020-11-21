@@ -1,0 +1,61 @@
+<html>
+	<head>
+		<title>Login</title>
+		<link rel="stylesheet" type= "text/css" href="{{ url_for('static', filename='bootstrap.min.css')}}">
+		<link rel="stylesheet" type= "text/css" href="{{ url_for('static', filename='my_style.css')}}">
+	</head>
+	<body style="background:white">
+		<div class="login-wrap">
+			<div class="login-logo">Test Messenger</div>
+			{% with messages = get_flashed_messages(with_categories=true) %}
+			{% if messages %}
+			{% for message in messages %}
+			{% if message[0] == 'error' %}
+			<div class="alert alert-danger" role="alert">{{ message[1] }}</div>
+			{% else %}
+			<div class="alert alert-success" role="alert">{{ message[1] }}</div>
+			{% endif %}
+			{% endfor %}
+			{% endif %}
+			{% endwith %}
+			<form action="" method="post" novalidate>
+				{{ form.hidden_tag() }}
+
+				<p>
+					{{ form.username.label }}<br>
+					{% if form.username.errors %}
+					<input class="form-control w-75 is-invalid" id="username" name="username" style="margin: 0 auto;" type="text">
+					{% for error in form.username.errors %}
+					<span style="color: red;">{{ error }}</span>
+					{% endfor %}
+					{% else %}
+					<input class="form-control w-75" id="username" name="username" style="margin: 0 auto;" type="text">
+					{% endif %}
+				</p>
+				<p>
+					{{ form.password.label }}<br>
+					{% if form.password.errors %}
+					<input class="form-control w-75 is-invalid" id="password" name="password" style="margin: 0 auto;" type="password">
+					{% for error in form.password.errors %}
+					<span style="color: red;">{{ error }}</span>
+					{% endfor %}
+					{% else %}
+					<input class="form-control w-75" id="password" name="password" style="margin: 0 auto;" type="password">
+					{% endif %}
+				</p>
+				<p>
+					{{ form.remember_me() }}<br>
+					{{ form.remember_me.label }}
+				</p>
+				<p>
+					{{ form.submit(class="btn btn-outline-secondary btn-sm",style="font-size:16") }}
+				</p>
+			</form>
+			<p><a href="{{ url_for('register') }}">Регистрация</a></p>
+			<p>
+				<a style="font-size: 19;color: gray;" href="{{ url_for('login_test_user') }}">Вход в тестовый аккаунт</a>
+			</p>
+
+		</div>
+	</body>
+</html>

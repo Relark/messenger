@@ -1,0 +1,49 @@
+<div id = "head_wrap" class="head_wrap">
+	{% if dialog %}
+	<div id="head_right" class="head_right">
+		<span style="font-weight: 500">{{user.username}}</span>
+		 - <span style="font-size:13px">{% include '_was_online.html' %}
+	</div>
+	{% endif %}
+	<div id="logo-wrap" class="logo-wrap">
+		<div class="logo">
+			<div id="menu_pic" class="menu_pic">&equiv;</div>
+			<div class="logo-text">Test messenger</div>
+		</div>
+	</div>
+	<div id="dd-menu" class="dd-menu">
+		<div id="contacts-link" class="menu_item_wrap">
+			<div class="menu_item_body">
+				<div class="menu_icon">
+					<img src="/static/images/contacts.png" height="25" width="25">
+				</div>
+				<div class="menu_text">
+					Контакты
+				</div>
+			</div>
+		</div>
+		<div id="settings-link" class="menu_item_wrap">
+			<div class="menu_item_body">
+				<div class="menu_icon">
+					<img src="/static/images/settings.png" height="25" width="25">
+				</div>
+				<div class="menu_text">
+					Настройки
+				</div>
+			</div>
+		</div>
+		<a href="{{url_for('logout')}}">
+			<div class="menu_item_wrap">
+				<div class="menu_item_body">
+					<div class="menu_icon">
+						<img style="margin-top:3;margin-left:5;" src="/static/images/logout.png" height="19" width="19">
+					</div>
+
+					<div class="menu_text">
+						Выход
+					</div>
+				</div>
+			</div>
+		</a>
+	</div>
+</div>

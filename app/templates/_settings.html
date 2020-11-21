@@ -1,0 +1,72 @@
+<div id="settings" class="settings"> 
+	<div class="settings-content">
+		<div class="settings-header">
+			<div id="settings-close" class="settings-close"><h1>&times;</h1></div>
+			<h3 style="padding-top:10px;">Настройки</h3>
+		</div>
+		<div class="settings-body">
+			<form action="" method="post" novalidate>				
+				{{ settings_form.hidden_tag() }}
+				{% if settings_form.username1.errors or
+					settings_form.email.errors or 
+					settings_form.password.errors or 
+					settings_form.password2.errors or
+					settings_form.status.errors %}
+				<script>
+					document.getElementById('settings').style.display = "block";
+				</script>
+				{% endif %}
+				{% with messages = get_flashed_messages(with_categories=true) %}
+				{% for message in messages %}
+				{% if message[0] == 'settings' %}
+				<script>
+					document.getElementById('settings').style.display = "block";
+				</script>
+				<span style="color: green;">{{ message[1] }}</span>
+				{% endif %}
+				{% endfor %}
+				{% endwith %}
+				<p>
+					{{ settings_form.username1.label }}<br>
+					{{ settings_form.username1(size=32) }}
+					{% for error in settings_form.username1.errors %}<br>
+					<span style="color: red;">{{ error }}</span>
+					{% endfor %}
+				</p>
+				<p>
+					{{ settings_form.email.label }}<br>
+					{{ settings_form.email(size=32) }}
+					{% for error in settings_form.email.errors %}<br>
+					<span style="color: red;">{{ error }}</span>
+					{% endfor %}
+				</p>
+
+				<p>
+					{{ settings_form.password.label }}<br>			
+					{{ settings_form.password(size=32) }}
+					{% for error in settings_form.password.errors %}<br>
+					<span style="color: red;">{{ error }}</span>
+					{% endfor %}
+				</p>
+				<p>
+					{{ settings_form.password2.label }}<br>
+					{{ settings_form.password2(size=32) }}
+					{% for error in settings_form.password2.errors %}<br>
+					<span style="color: red;">{{ error }}</span>
+					{% endfor %}
+				</p>
+				<p>
+					{{ settings_form.status.label }}<br>
+					{{ settings_form.status(cols=32,rows=5,style="resize: none;")}}
+					{% for error in settings_form.status.errors %}<br>
+					<span style="color: red;">{{ error }}</span>
+					{% endfor %}
+				</p>
+				<p>
+					{{ settings_form.submit(class="btn btn-outline-secondary btn-sm") }}
+				</p>
+
+			</form>
+		</div>
+	</div>
+</div>

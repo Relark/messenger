@@ -1,0 +1,60 @@
+<html>
+	<head>
+		<title>Register</title>
+		<link rel="stylesheet" type= "text/css" href="{{ url_for('static', filename='bootstrap.min.css')}}">
+		<link rel="stylesheet" type= "text/css" href="{{ url_for('static', filename='my_style.css')}}">
+	</head>
+	<body style="background:white">
+		<div class="login-wrap">
+			<div class="login-logo">Регистрация</div>
+			<form action="" method="post" novalidate>
+				{{ form.hidden_tag() }}
+				<p>
+					{{ form.username.label }}<br>
+					{% if form.username.errors %}
+					<input class="form-control w-75 is-invalid" id="username" name="username" style="margin: 0 auto;" type="text">
+					{% for error in form.username.errors %}
+					<span style="color: red;">{{ error }}</span>
+					{% endfor %}
+					{% else %}
+					<input class="form-control w-75" id="username" name="username" style="margin: 0 auto;" type="text">
+					{% endif %}
+				</p>
+				<p>
+					{{ form.email.label }}<br>
+					{% if form.email.errors %}
+					<input class="form-control w-75 is-invalid" id="email" name="email" style="margin: 0 auto;" type="text">
+					{% for error in form.email.errors %}
+					<span style="color: red;">{{ error }}</span>
+					{% endfor %}
+					{% else %}
+					<input class="form-control w-75" id="email" name="email" style="margin: 0 auto;" type="text">
+					{% endif %}
+				</p>
+				<p>
+					{{ form.password.label }}<br>
+					{% if form.password.errors %}
+					<input class="form-control w-75 is-invalid" id="password" name="password" style="margin: 0 auto;" type="password">
+					{% for error in form.password.errors %}
+					<span style="color: red;">{{ error }}</span>
+					{% endfor %}
+					{% else %}
+					<input class="form-control w-75" id="password" name="password" style="margin: 0 auto;" type="password">
+					{% endif %}
+				</p>
+				<p>
+					{{ form.password2.label }}<br>
+					{% if form.password.errors %}
+					<input class="form-control w-75 is-invalid" id="password2" name="password2" style="margin: 0 auto;" type="password">
+					{% for error in form.password2.errors %}
+					<span style="color: red;">{{ error }}</span>
+					{% endfor %}
+					{% else %}
+					<input class="form-control w-75" id="password2" name="password2" style="margin: 0 auto;" type="password">
+					{% endif %}
+				</p>
+				<p style="padding-top:15">{{ form.submit(class="btn btn-outline-secondary btn-sm",style="font-size: 17;") }}</p>
+			</form>
+		</div>
+	</body>
+</html>

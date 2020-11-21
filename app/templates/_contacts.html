@@ -1,0 +1,48 @@
+<div id="contacts" class="contacts"> 
+	<div class="contacts-content">
+		<div class="contacts-header">
+			<div class="contacts-close"><h1>&times;</h1></div>
+			<h3 style="padding-top:10px;">Контакты</h3>
+		</div>
+		<div class="contacts-body">
+			<div class="search-contact-form">
+				<form action="" method="post" novalidate>
+					{{ contacts_form.hidden_tag() }}
+					<p>
+						{{ contacts_form.username(size=30, placeholder="Введите имя нового контакта..") }}
+						{{ contacts_form.submit1(class="btn btn-outline-secondary btn-sm",style="margin-bottom:3;")}}
+					</p>
+					<p>	
+						{% if contacts_form.username.errors %}
+						<script>
+							document.getElementById('contacts').style.display = "block";
+						</script>
+						{% endif %}
+						{% for error in contacts_form.username.errors %}
+						<span style="color: red;">{{ error }}</span>
+						{% endfor %}
+						{% with messages = get_flashed_messages(with_categories=true) %}
+						{% for message in messages %}
+						{% if message[0] == 'contacts' %}
+						<script>
+							document.getElementById('contacts').style.display = "block";
+						</script>
+						<span style="color: green;">{{ message[1] }}</span>
+						{% endif %}
+						{% endfor %}
+						{% endwith %}
+					</p>
+				</form>
+			</div>
+			{% for user in current_user.contacts.all() %}
+			<a href="/open_dialog/{{user.username}}">
+				<div class="contact-wrap">
+					<div class="contact-userpic" style="background:{{ user.color}}">{{ user.username[:1] }}</div>
+					<div>{{ user.username }}</div>
+					{% include '_was_online.html' %}
+				</div>
+			</a>
+			{% endfor %}
+		</div>
+	</div>
+</div>

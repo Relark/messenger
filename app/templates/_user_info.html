@@ -1,0 +1,20 @@
+<div id="user_info" class="user_info"> 
+	<div class="user_info_content">
+		<div class="user_info_header">
+			<div id="user_info_close" class="user_info_close"><h1>&times;</h1></div>
+			<div class="user_info_userpic" style="background-color:{{ user.color }}">{{ user.username[0] }}</div>
+			<div class="user_info_username">{{ user.username }}</div>
+			<div>{% include '_was_online.html' %}</div>
+		</div>
+		<div class="user_info_body">
+			<div class="user_info_body_username">
+				<span style = "font-weight:700">Имя пользователя :&ensp;</span>
+				<span style = "color: #3a6d99; font-weight: 600">{{ user.username }}
+			</div>
+			<div class="user_info_body_status">
+				<span style ="font-weight:700">О себе :&ensp;</span> 
+				{{ user.status }}
+			</div>
+		</div>
+	</div>
+</div>

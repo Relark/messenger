@@ -1,0 +1,64 @@
+{% extends 'base.html' %}
+
+{% block content %}
+
+<div class="right_block" id={{ dialog.id }}>
+	<div id='messages_block_wrap' class="messages_block_wrap">
+		<div class="messages_block" id="messages_block">
+			{% include '_messages.html' %}
+		</div>
+	</div>
+	<div class="send_message_block">
+			<div class="send_message_userpic_right" style="background:{{ current_user.dialog_color(dialog) }}">
+			{{ current_user.dialog_name(dialog)[:1] }}
+			</div>
+			<div class="send_message_userpic_left" style="background:{{ current_user.color }}">{{ current_user.username[:1] }}
+			</div>
+			<div class="send_message_textarea_block">
+				<textarea id="textarea" class="send_message_textarea" autofocus id="textarea" name="textarea" rows="3" cols=47 placeholder="Напишите сообщение..."></textarea>
+			</div>
+			<div class="send_message_button_block" style = "float:right">
+				<button id='send_button' class="btn btn-outline-secondary btn-sm">Отправить</button>
+			</div>
+			<div class="smile-wrap">
+				<a class="smile">&#128578;</a>
+				<a class="smile">&#128514;</a>
+				<a class="smile">&#128521;</a>
+				<a class="smile">&#128528;</a>
+				<a class="smile">&#128527;</a>
+				<a class="smile">&#128522;</a>
+				<a class="smile">&#128549;</a>
+				<a class="smile">&#128536;</a>
+				<a class="smile">&#128564;</a>
+				<a class="smile">&#128565;</a>
+				<a class="smile">&#128563;</a>
+				<a class="smile">&#128561;</a>
+			</div>
+	</div>
+</div>
+
+{% if dialog.personal == True %}
+<div id="user_info_head" class="user_info"> 
+	<div class="user_info_content">
+		<div class="user_info_header">
+			<div id = "user_info_head_close" class="user_info_close"><h1>&times;</h1></div>
+			<div class="user_info_userpic" style="background-color:{{ user.color }}">{{ user.username[0] }}</div>
+			<div class="user_info_username">{{ user.username }}</div>
+			{% include '_was_online.html' %}
+		</div>
+		<div class="user_info_body">
+			<div class="user_info_body_username">
+			<span style = "font-weight:700">Имя пользователя :&ensp;</span>
+			<span style = "color: #3a6d99; font-weight: 600">{{ user.username }}
+			</div>
+			<div class="user_info_body_status">
+			<span style ="font-weight:700">О себе :&ensp;</span> 
+			{{ user.status }}
+			</div>
+		</div>
+	</div>
+</div>
+{% endif %}
+
+
+{% endblock %}

@@ -1,0 +1,19 @@
+{% for message in messages | reverse %}
+<div class="message_wrap_1">
+	<div class="message_wrap_2">
+		<div class="message_date">
+		{{ message.timestamp.strftime("%H:%M:%S") }}<br>
+		{% if (time-message.timestamp).days > 1 %}
+		{{ message.timestamp.strftime("%d/%m/%y") }}
+		{% endif %}
+		</div>
+			<div class="message_userpic" style="background:{{ message.sender.color }}">{{ message.sender.username[:1] }}</div>
+		<div class="message_body">
+			<div id="{{ message.sender.id }}" class="message_username">
+				{{ message.sender.username }}
+			</div>
+			<div class = "message_text">{{ message.body }}</div>
+		</div>
+	</div>
+</div>
+{% endfor %}
