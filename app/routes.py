@@ -105,19 +105,20 @@ def im(im_id=None):
 			contacts_form=contacts_form,settings_form=settings_form)
 	else:
 		dialog = Dialog.query.get(im_id)
-		if dialog:
-			if current_user.in_dialog(dialog.id): # Проверка, есть ли у пользователя доступ к диалогу
+		if dialog and current_user.in_dialog(dialog.id): # Проверка, есть ли у пользователя доступ к диалогу
 				current_user.read_unread_messages(im_id)
 				left_messages = current_user.left_messages()
 				current_user.last_seen = datetime.utcnow()
 				db.session.commit()
-				if dialog.personal == True: # нужно для отображения информации о пользователе в шапке сайта
+				if dialog.type == 'personal': # нужно для отображения информации о пользователе в шапке сайта
 					user = dialog.users.filter(User.username != current_user.username).first() 
-				messages = current_user.dialog_messages(dialog.id).limit(50).all()
-				return render_template('im.html', user=user, time=time, messages=messages,dialog=dialog, left_messages=left_messages,
-					contacts_form=contacts_form,settings_form=settings_form)
-			else: 
-				return redirect(url_for('im'))
+					messages = current_user.dialog_messages(dialog.id).limit(50).all()
+					return render_template('im.html', user=user, time=time, messages=messages,dialog=dialog, left_messages=left_messages,
+						contacts_form=contacts_form,settings_form=settings_form)
+				else:
+					messages = current_user.dialog_messages(dialog.id).limit(50).all()
+					return render_template('im.html',time=time, messages=messages,dialog=dialog, left_messages=left_messages,
+						contacts_form=contacts_form,settings_form=settings_form)
 		else: 
 			return redirect(url_for('im'))
 
@@ -229,3 +230,15 @@ def login_test_user():
 	user = User.query.filter_by(username='test').first()
 	login_user(user)
 	return redirect(url_for('im'))
+
+# функция создания беседы
+@app.route('/create_conversation', methods=['POST'])
+def create_conversation():
+	req = request.get_json()
+	user_id_list = req['contacts']
+	dialog_name = req['textarea_data']
+	dialog_id = current_user.create_conversation(user_id_list, dialog_name)
+	db.session.commit()
+
+	return {'redirect': str(url_for('im', im_id=dialog_id))}
+

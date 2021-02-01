@@ -1,4 +1,5 @@
 {% for message in messages | reverse %}
+{% if message.sender %}
 <div class="message_wrap_1">
 	<div class="message_wrap_2">
 		<div class="message_date">
@@ -16,4 +17,9 @@
 		</div>
 	</div>
 </div>
+{% else %}
+<center style="font-size:13; color:#7b7b7b;">
+	{{message.body}}
+</center>
+{% endif %}
 {% endfor %}

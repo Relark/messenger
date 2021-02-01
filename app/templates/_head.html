@@ -1,8 +1,12 @@
 <div id = "head_wrap" class="head_wrap">
-	{% if dialog %}
+	{% if dialog and dialog.type == 'personal' %}
 	<div id="head_right" class="head_right">
 		<span style="font-weight: 500">{{user.username}}</span>
 		 - <span style="font-size:13px">{% include '_was_online.html' %}
+	</div>
+	{% elif dialog and dialog.type == 'conversation' %}
+	<div id="head_right" class="head_right">
+		<span style="font-weight: 500">Управление беседой - в разработке</span>
 	</div>
 	{% endif %}
 	<div id="logo-wrap" class="logo-wrap">
@@ -12,10 +16,20 @@
 		</div>
 	</div>
 	<div id="dd-menu" class="dd-menu">
+		<div id="conversation-link" class="menu_item_wrap">
+			<div class="menu_item_body">
+				<div class="menu_icon">
+					<img src="/static/images/conversation.png?{{time}}" height="25" width="25">
+				</div>
+				<div class="menu_text">
+					Создать беседу (beta)
+				</div>
+			</div>
+		</div>
 		<div id="contacts-link" class="menu_item_wrap">
 			<div class="menu_item_body">
 				<div class="menu_icon">
-					<img src="/static/images/contacts.png" height="25" width="25">
+					<img src="/static/images/contacts.png?{{time}}" height="25" width="25">
 				</div>
 				<div class="menu_text">
 					Контакты
@@ -25,7 +39,7 @@
 		<div id="settings-link" class="menu_item_wrap">
 			<div class="menu_item_body">
 				<div class="menu_icon">
-					<img src="/static/images/settings.png" height="25" width="25">
+					<img src="/static/images/settings.png?{{time}}" height="25" width="25">
 				</div>
 				<div class="menu_text">
 					Настройки

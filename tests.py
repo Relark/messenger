@@ -6,7 +6,7 @@ from sqlalchemy import and_
 
 class UserTestCase(unittest.TestCase):
 	def setUp(self):
-		app.config['SQLALCHEMY_DATABASE_URI'] = 'postgresql://test:test@localhost:5454/test_db'
+		app.config['SQLALCHEMY_DATABASE_URI'] = 'postgresql://postgres:123@localhost:5432/messenger_test'
 		db.create_all()
 
 	def tearDown(self):
@@ -44,7 +44,7 @@ class UserTestCase(unittest.TestCase):
 
 class DialogTestCase(unittest.TestCase):
 	def setUp(self):
-		app.config['SQLALCHEMY_DATABASE_URI'] = 'postgresql://test:test@localhost:5454/test_db'
+		app.config['SQLALCHEMY_DATABASE_URI'] = 'postgresql://postgres:123@localhost:5432/messenger_test'
 		db.create_all()
 		# создадим несколько пользователей
 		u1 = User(username='u1')

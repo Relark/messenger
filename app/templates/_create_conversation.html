@@ -1,0 +1,25 @@
+<div id="conversation" class="conversation"> 
+	<div class="conversation-content">
+		<div class="conversation-header">
+			<div class="conversation-close"><h1>&times;</h1></div>
+			<h3 style="padding-top:10px;">Cоздание беседы</h3>
+		</div>
+		<div class="conversation-body">
+			<div class="conversation-name-wrap">
+				<textarea id="conversation-name-textarea" class="conversation-name-textarea" autofocus="" name="textarea" rows="1" cols="47" placeholder="Название беседы:" style="white-space:nowrap; overflow:hidden;"></textarea>
+			</div>
+			<div id='contacts_wrap'>
+			{% for user in current_user.contacts.all() %}
+				<div id="{{ user.id }}"class="contact-wrap" style="cursor:pointer;">
+					<div class="contact-userpic" style="background:{{ user.color}}">{{ user.username[:1] }}</div>
+					<div>{{ user.username }}</div>
+					<div>{% include '_was_online.html' %}</div>
+				</div>
+			{% endfor %}
+			</div>
+			<div style="padding: 10 145;">
+				<button id='conversation-button' class="btn btn-outline-secondary btn-sm">Cоздать беседу</button>
+			</div>
+		</div>
+	</div>
+</div>

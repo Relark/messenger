@@ -15,7 +15,7 @@ association_table = db.Table('association_table',
 	db.Column('unread',db.Integer,default = 0,index=True)
 	)
 
-#Таблица связи, контакты.
+#Таблица связи для контактов.
 contacts = db.Table('contacts',
 	db.Column('user_id', db.Integer, db.ForeignKey('user.id')),
 	db.Column('contact_id', db.Integer, db.ForeignKey('user.id'))
@@ -54,21 +54,35 @@ class User(UserMixin,db.Model):
 			contacts.c.contact_id == user.id).count() > 0
 
 	def create_personal_dialog(self,user):
-		dialog = Dialog(creator=self, personal=True)
+		dialog = Dialog(creator=self, type='personal')
 		dialog.users.append(self)
 		dialog.users.append(user)
 		db.session.add(dialog)
 
+	def create_conversation(self, user_id_list, dialog_name):
+		dialog = Dialog(creator=self, type='conversation',color=choice(userpic_colors))
+		db.session.add(dialog)
+		db.session.commit()
+		if dialog_name:	
+			dialog.name = dialog_name
+		else:	
+			dialog.name = 'Беседа_'+str(dialog.id)
+		dialog.users.append(self)
+		for user_id in user_id_list:
+			user = User.query.get(user_id)
+			dialog.users.append(user)
+		message = Message(body=str(self.username)+' создет беседу '+'"'+dialog.name+'"', dialog_id=dialog.id)
+		db.session.add(message)
+		return dialog.id
+
 	'''
-	возвращает строку (dialog_id,user_id) из association_table с общим личным диалогом для двух пользователей,
-	если такая есть
+	возвращает dialog_id из association_table с общим личным диалогом для двух пользователей, если он есть
 	'''
 	def is_personal_dialog(self,user):
-		subq = db.session.query(association_table.c.user_id,association_table.c.dialog_id).filter(
-			(or_(association_table.c.user_id == self.id,association_table.c.user_id == user.id))).subquery()
-		return db.session.query(subq.c.dialog_id, func.count(subq.c.dialog_id)).group_by(subq.c.dialog_id).\
-				having(func.count(subq.c.dialog_id) == 2).first()
-
+		subq = db.session.query(association_table.c.dialog_id,association_table.c.user_id).\
+			filter(or_(association_table.c.user_id == self.id, association_table.c.user_id == user.id)).subquery()
+		return db.session.query(subq.c.dialog_id,func.count()).join(Dialog, and_(Dialog.type == 'personal', subq.c.dialog_id == Dialog.id)).\
+			group_by(subq.c.dialog_id).having(func.count() == 2).first()
 
 	def dialog_messages(self,dialog_id):
 		dialog = Dialog.query.get(dialog_id)
@@ -106,21 +120,21 @@ class User(UserMixin,db.Model):
 					.order_by(Message.timestamp.desc()).all()
 
 	'''
-	Возвращает никнейм собеседника, если диалог личный,
-	либо название диалога, если в нем много пользователей.
+	Возвращает никнейм собеседника, если диалог обычный.
+	Если это беседа, возвращает ее название
 	'''
 	def dialog_name(self,dialog): # 
-		if dialog.personal == True :
+		if dialog.type == 'personal' :
 			return dialog.users.filter(User.username != self.username).first().username
 		else:
 			return dialog.name
 
 	'''
-	Возвращает цвет иконки собеседника, если диалог личный,
-	либо цвет иконки диалога, если в нем много пользователей.
+	Возвращает цвет иконки собеседника, если диалог обычный.
+	Если это беседа - цвет ее иконки.
 	'''
 	def dialog_color(self,dialog): # +
-		if dialog.personal == True :
+		if dialog.type == 'personal' :
 			return dialog.users.filter(User.username != self.username).first().color
 		else:
 			return dialog.color
@@ -137,7 +151,7 @@ class User(UserMixin,db.Model):
 	'''
 	def add_admin(self):
 		admin = User.query.filter_by(username='admin').first()
-		dialog = Dialog(creator=admin, personal=True)
+		dialog = Dialog(creator=admin, type='personal')
 		db.session.add(dialog)
 		dialog.users.append(self)
 		dialog.users.append(admin)
@@ -185,8 +199,7 @@ class Dialog(db.Model):
 	messages = db.relationship('Message', foreign_keys = 'Message.dialog_id', backref = 'dialog', lazy='dynamic')
 	users = db.relationship(
 		'User', secondary=association_table, backref=db.backref('dialogs', lazy='dynamic'), lazy='dynamic' )
-	personal = db.Column(db.Boolean, index=True) # True, если диалог между двумя пользователями.
-	type = db.Column(db.String(32), index=True)
+	type = db.Column(db.String(32), index=True) 
 	color = db.Column(db.String(10), default=choice(userpic_colors)) # цвет иконки диалога
 
 	def __repr__(self):

@@ -20,7 +20,9 @@
 		<div class="unread_messages" style="width:40px">1000+</div>
 		{% endif %}
 		{% if message[0].sender == current_user %}
-		<div class="left_block_text"><span style="font-size:13px; color:#949494;">Вы:</span>{{ message[0].body }}</div>
+		<div class="left_block_text"><span style="font-size:13px; color:#949494;">Вы: </span>{{ message[0].body }}</div>
+		{% elif message[0].dialog.type == 'conversation' and message[0].sender != current_user and message[0].sender != None %}
+		<div class="left_block_text"><span style="font-size:13px; color:#949494;">{{message[0].sender.username}}: </span>{{ message[0].body }}</div>
 		{% else %}
 		<div class="left_block_text">{{ message[0].body }}</div>
 		{% endif %}

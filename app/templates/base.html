@@ -15,10 +15,7 @@
 		</div>
 		{% include '_contacts.html' %}
 		{% include '_settings.html' %}
-		{% if dialog %}
+		{% include '_create_conversation.html' %}
 		<script charset="utf-8" src="/static/script.js?{{time}}"></script>
-		{% else %}
-		<script charset="utf-8" src="/static/script2.js?{{time}}"></script>
-		{% endif %}
 	</body>		
 </html>
