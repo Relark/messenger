@@ -186,6 +186,7 @@ class Dialog(db.Model):
 	users = db.relationship(
 		'User', secondary=association_table, backref=db.backref('dialogs', lazy='dynamic'), lazy='dynamic' )
 	personal = db.Column(db.Boolean, index=True) # True, если диалог между двумя пользователями.
+	type = db.Column(db.String(32), index=True)
 	color = db.Column(db.String(10), default=choice(userpic_colors)) # цвет иконки диалога
 
 	def __repr__(self):
