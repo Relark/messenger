@@ -1,0 +1,5 @@
+*.pem
+*.key
+*.crt
+**/.DS_Store
+**/__pycache__
